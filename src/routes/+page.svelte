@@ -21,7 +21,7 @@
         }
     } 
     
-    function newTile(_) {
+    function newTile() {
         updateZeroes();
         if (zeroes.length == 0) {
             return;
