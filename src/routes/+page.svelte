@@ -12,7 +12,10 @@
     ];
     let zeroes: [number, number][] = [];
     
-    // update the array where there are no tiles
+    /**
+     * Updates the zeroes array to contain the locations
+     * of all empty tiles in the board array.
+     */
     function updateZeroes() {
         zeroes = [];
         for (let i = 0; i < 4; i++) {
@@ -22,9 +25,13 @@
                 }
             }
         }
-    } 
+    }
     
-    // create a new tile where there are no tiles
+    /**
+     * Creates a new tile with a random value in a random empty spot on the board.
+     * It calls updateZeroes() to get a list of empty spots,
+     * then randomly selects one and assigns a 2 with 90% probability or a 4.
+     */
     function newTile() {
         updateZeroes();
         if (zeroes.length === 0) {
