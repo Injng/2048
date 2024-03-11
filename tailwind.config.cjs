@@ -6,7 +6,9 @@ const config = {
     extend: {},
   },
 
-  plugins: [],
+  plugins: [
+    require('tailwind-nord'),
+  ],
 };
 
 module.exports = config;
