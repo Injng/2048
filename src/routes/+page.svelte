@@ -27,13 +27,15 @@
     // create a new tile where there are no tiles
     function newTile() {
         updateZeroes();
-        if (zeroes.length == 0) {
+        if (zeroes.length === 0) {
             return;
         }
         let [i, j] = zeroes[Math.floor(Math.random() * zeroes.length)];
         board[i][j] = Math.random() < 0.9 ? 2 : 4;
         board = board;
     }
+    
+    newTile();
 
     /**
      * Finds the farthest position a tile can slide to in a given direction.
@@ -44,31 +46,31 @@
      */
     function findFarthest(tile: [number, number], direction: number): [number, number] {
         let [x, y] = tile;
-        if (direction == 0) {
-            if (x == 0) return [x, y];
+        if (direction === 0) {
+            if (x === 0) return [x, y];
             for (let i = x - 1; i >= 0; i--) {
-                if (board[i][y] == board[x][y]) return [i, y];
+                if (board[i][y] === board[x][y]) return [i, y];
                 else if (board[i][y] != 0) return [i + 1, y];
             }
             return [0, y];
-        } else if (direction == 1) {
-            if (y == 3) return [x, y];
+        } else if (direction === 1) {
+            if (y === 3) return [x, y];
             for (let i = y + 1; i <= 3; i++) {
-                if (board[x][i] == board[x][y]) return [x, i];
+                if (board[x][i] === board[x][y]) return [x, i];
                 else if (board[x][i] != 0) return [x, i - 1];
             }
             return [x, 3];
-        } else if (direction == 2) {
-            if (x == 3) return [x, y];
+        } else if (direction === 2) {
+            if (x === 3) return [x, y];
             for (let i = x + 1; i <= 3; i++) {
-                if (board[i][y] == board[x][y]) return [i, y];
+                if (board[i][y] === board[x][y]) return [i, y];
                 else if (board[i][y] != 0) return [i - 1, y];
             }
             return [3, y];
-        } else if (direction == 3) {
-            if (y == 0) return [x, y];
+        } else if (direction === 3) {
+            if (y === 0) return [x, y];
             for (let i = y - 1; i >= 0; i--) {
-                if (board[x][i] == board[x][y]) return [x, i];
+                if (board[x][i] === board[x][y]) return [x, i];
                 else if (board[x][i] != 0) return [x, i + 1];
             }
             return [x, 0];
@@ -84,6 +86,7 @@
      * @param e - KeyboardEvent triggered by arrow key press
      */
     function moveTiles(e: KeyboardEvent) {
+        let moved: boolean = false;
         // direction: 0=north, 1=east, 2=south, 3=west
         let direction: number = -1;
         switch (e.key) {
@@ -100,24 +103,35 @@
                 direction = 1;
                 break;
         }
-        if (direction == -1) return;
+        if (direction === -1) return;
 
         // pass through the board and slide tiles in the given direction
-        for (let i = 0; i < 4; i++) {
-            for (let j = 0; j < 4; j++) {
-                if (board[i][j] == 0) continue;
-                let [x, y] = findFarthest([i, j], direction);
-                console.log("reached");
-                if (x == i && y == j) continue;
-                else if (board[x][y] == 0) board[x][y] = board[i][j];
-                else if (board[x][y] == board[i][j]) board[x][y] *= 2;
-                console.log("hello");
-                console.log(board[x][y]);
-                console.log(board[i][j]);
-                board[i][j] = 0;
+        if (direction === 0 || direction === 3) {
+            for (let i = 0; i < 4; i++) {
+                for (let j = 0; j < 4; j++) {
+                    if (board[i][j] === 0) continue;
+                    let [x, y] = findFarthest([i, j], direction);
+                    if (x === i && y === j) continue;
+                    else if (board[x][y] === 0) board[x][y] = board[i][j];
+                    else if (board[x][y] === board[i][j]) board[x][y] *= 2;
+                    moved = true;
+                    board[i][j] = 0;
+                }
+            }
+        } else {
+            for (let i = 3; i >= 0; i--) {
+                for (let j = 3; j >= 0; j--) {
+                    if (board[i][j] === 0) continue;
+                    let [x, y] = findFarthest([i, j], direction);
+                    if (x === i && y === j) continue;
+                    else if (board[x][y] === 0) board[x][y] = board[i][j];
+                    else if (board[x][y] === board[i][j]) board[x][y] *= 2;
+                    moved = true;
+                    board[i][j] = 0;
+                }
             }
         }
-        newTile();
+        if (moved) newTile();
         board = board;
     }
 </script>
