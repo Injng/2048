@@ -8,6 +8,28 @@
         [0, 0, 0, 0],
         [0, 0, 0, 0]
     ];
+    let zeroes: [number, number][] = [];
+    
+    function updateZeroes() {
+        zeroes = [];
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                if (board[i][j] == 0) {
+                    zeroes.push([i, j]);
+                }
+            }
+        }
+    } 
+    
+    function newTile(_) {
+        updateZeroes();
+        if (zeroes.length == 0) {
+            return;
+        }
+        let [i, j] = zeroes[Math.floor(Math.random() * zeroes.length)];
+        board[i][j] = Math.random() < 0.9 ? 2 : 4;
+        board = board;
+    }
 </script>
 
 <body>
@@ -98,3 +120,5 @@
         </div>
     </div>
 </body>
+
+<svelte:window on:keydown|preventDefault={newTile} />
